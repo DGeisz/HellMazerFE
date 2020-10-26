@@ -24,6 +24,7 @@
     "webpack-cli": "^3.3.12"
   },
   "dependencies": {
+    "axios": "^0.21.0",
     "copyfiles": "^2.3.0",
     "uuid": "^8.2.0"
   }
