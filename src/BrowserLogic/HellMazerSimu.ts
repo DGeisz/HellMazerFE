@@ -24,7 +24,7 @@ export class HellMazerSimu {
     }
 
     tick() {
-        syncWithEywa();
-        updateHellMazer();
+        // syncWithEywa();
+        // updateHellMazer();
     }
 }

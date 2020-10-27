@@ -1,0 +1,12 @@
+.drop {
+    -webkit-border-top-left-radius: 30px;
+    -webkit-border-top-right-radius: 30px;
+
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+
+    border-top: 20px solid #73030b;
+    width: 0;
+    height: 0;
+
+}

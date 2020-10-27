@@ -6,7 +6,7 @@
   "scripts": {
     "start": "npm run compile && electron .",
     "dev": "npm run compile && concurrently \"electron .\" \"npm run watchJs\"",
-    "compile": "tsc && webpack && copyfiles src/**/*.css src/**/*.html build",
+    "compile": "tsc && webpack && npm run copyNonJs",
     "copyNonJs": "copyfiles src/**/*.css src/**/*.html build",
     "watchJs": "webpack --watch",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -18,6 +18,7 @@
     "concurrently": "^5.3.0",
     "electron": "^9.1.1",
     "electron-reload": "^1.5.0",
+    "file-loader": "^6.1.1",
     "ts-loader": "^8.0.3",
     "typescript": "^3.9.7",
     "webpack": "^4.44.1",
