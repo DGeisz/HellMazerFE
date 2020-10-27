@@ -1,27 +1,41 @@
+import { SceneRender } from "./view/scene_render";
+import { Maze } from "./model/maze";
+import { Vehicle } from "./model/vehicle";
 
 
 export class HellMazerSimu {
-    private frame_rate: number;
-    /** Time width of the maze*/
-    private maze_width: number;
-    /** Tile height of the maze*/
-    private maze_height: number;
+    /** Frame rate of the simulation*/
+    private readonly frame_rate: number;
 
-    /** Side length of the tile in pixels*/
-    private tile_side_length: number;
+    /** Renders the scene*/
+    private readonly scene_render: SceneRender;
 
-    constructor(maze_width: number, maze_height: number, tile_side_length, frame_rate: number) {
-        this.maze_height = maze_height;
-        this.maze_width = maze_width;
+    /** Maze of the simulation*/
+    private readonly maze: Maze;
+
+    /** Vehicle in the simulation*/
+    private readonly vehicle: Vehicle;
+
+    /**
+     * d_wheel is the distance between the vehicle wheels. This informs how sharply
+     * the vehicle turns.  grid_width is the pixel width of each grid.
+     */
+    constructor(maze: Maze, d_wheel: number, grid_width: number, frame_rate: number) {
         this.frame_rate = frame_rate;
-        this.tile_side_length = tile_side_length;
+        this.maze = maze;
+        this.vehicle = new Vehicle(this.maze.vehicle_start, d_wheel);
+        this.scene_render = new SceneRender(grid_width, this.maze, this.vehicle);
     }
 
+    /**
+     * Runs the simulation
+     */
     run() {
         setInterval(() => {
             this.tick();
         }, 1000 / this.frame_rate);
     }
+
 
     tick() {
         // syncWithEywa();

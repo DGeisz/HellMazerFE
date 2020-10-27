@@ -13,9 +13,9 @@ export class Vehicle {
     /** distance between wheels*/
     d_wheel: number;
 
-    constructor(x: number, y: number, d_wheel) {
-        this.x = x;
-        this.y = y;
+    constructor(starting_coord: [number, number], d_wheel) {
+        this.x = starting_coord[0];
+        this.y = starting_coord[1];
         this.d_wheel = d_wheel;
 
         this.v_l = 0;
