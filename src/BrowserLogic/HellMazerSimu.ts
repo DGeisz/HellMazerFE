@@ -73,7 +73,13 @@ export class HellMazerSimu {
     async tick() {
         const input = this.getSensoryInput();
         try {
-            const actuatorResponse = await this.callEywa(input);
+            // const actuatorResponse = await this.callEywa(input);
+            const actuatorResponse: ActuatorHttpResponse = {
+                left_backward: 0,
+                left_forward: 1,
+                right_backward: 0,
+                right_forward: 0.9
+            }
             this.updateSimu(actuatorResponse);
         } catch (e) {
             console.log(e);
@@ -84,13 +90,13 @@ export class HellMazerSimu {
         const front_distance = this.maze.distanceToNearestWall(this.vehicle.x, this.vehicle.y, this.vehicle.angle);
         const front_pain = front_distance < this.painThreshold ? 1.0 : 0.0;
 
-        const right_distance = this.maze.distanceToNearestWall(this.vehicle.x, this.vehicle.y, this.vehicle.angle + (Math.PI / 4));
+        const right_distance = this.maze.distanceToNearestWall(this.vehicle.x, this.vehicle.y, this.vehicle.angle + (Math.PI / 2));
         const right_pain = right_distance < this.painThreshold ? 1.0 : 0.0;
 
-        const back_distance = this.maze.distanceToNearestWall(this.vehicle.x, this.vehicle.y, this.vehicle.angle + (Math.PI / 2));
+        const back_distance = this.maze.distanceToNearestWall(this.vehicle.x, this.vehicle.y, this.vehicle.angle + (Math.PI));
         const back_pain = back_distance < this.painThreshold ? 1.0 : 0.0;
 
-        const left_distance = this.maze.distanceToNearestWall(this.vehicle.x, this.vehicle.y, this.vehicle.angle + ((3 * Math.PI) / 4));
+        const left_distance = this.maze.distanceToNearestWall(this.vehicle.x, this.vehicle.y, this.vehicle.angle + ((3 * Math.PI) / 2));
         const left_pain = left_distance < this.painThreshold ? 1.0 : 0.0;
 
         return {
@@ -106,7 +112,9 @@ export class HellMazerSimu {
     }
 
     async callEywa(sensory_input: SensorHttpBody): Promise<ActuatorHttpResponse> {
-        return await axios.put('http://localhost:4200/sensactio', sensory_input);
+        const response: ActuatorHttpResponse = (await axios.put('http://localhost:4200/sensactio', sensory_input)).data;
+        console.log(response);
+        return response;
     }
 
     updateSimu(actuatorInput: ActuatorHttpResponse) {
@@ -116,5 +124,7 @@ export class HellMazerSimu {
             actuatorInput.right_forward - actuatorInput.right_backward,
             this.maze.wallsInFrontOfVehicle(this.vehicle)
         );
+
+        this.scene_render.render_vehicle(this.vehicle);
     }
 }

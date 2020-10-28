@@ -91,7 +91,9 @@ export class Maze {
      * in that direction
      */
     distanceToNearestWall(x: number, y: number, angle: number): number {
-        const slope = Math.tan(angle);
+        let slope = Math.tan(angle);
+
+        if (slope === 0) slope += 0.0001;
 
         const linear = x_n => (slope * (x_n - x)) + y;
         const inv_linear = y_n => ((1 / slope) * (y_n - y)) + x;
