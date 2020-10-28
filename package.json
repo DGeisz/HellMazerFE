@@ -15,6 +15,7 @@
   "author": "Danny F#$%^& Geisz",
   "license": "ISC",
   "devDependencies": {
+    "@types/axios": "^0.14.0",
     "concurrently": "^5.3.0",
     "electron": "^9.1.1",
     "electron-reload": "^1.5.0",
