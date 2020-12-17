@@ -95,10 +95,22 @@ export class Maze {
 
         if (slope === 0) slope += 0.0001;
 
+        angle = angle % (2 * Math.PI);
+
         const linear = x_n => (slope * (x_n - x)) + y;
         const inv_linear = y_n => ((1 / slope) * (y_n - y)) + x;
 
         const intersecting_walls = this.walls.filter(wall => {
+            if (angle < Math.PI / 2) {
+                if (wall.end[1] < y || wall.end[0] < x) return false;
+            } else if (angle >= Math.PI / 2 && angle < Math.PI) {
+                if (wall.start[1] > y || wall.end[0] < x) return false;
+            } else if (angle >= Math.PI && angle < 3 * Math.PI / 2) {
+                if (wall.start[1] > y || wall.start[0] > x) return false;
+            } else {
+                if (wall.end[1] < y || wall.start[0] > x) return false;
+            }
+
             if (wall.is_vertical()) {
                 const y_intercept = linear(wall.start[0]);
                 return wall.end[1] >= y_intercept && wall.start[1] <=  y_intercept;

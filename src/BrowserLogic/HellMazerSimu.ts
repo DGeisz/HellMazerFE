@@ -73,13 +73,13 @@ export class HellMazerSimu {
     async tick() {
         const input = this.getSensoryInput();
         try {
-            // const actuatorResponse = await this.callEywa(input);
-            const actuatorResponse: ActuatorHttpResponse = {
-                left_backward: 0,
-                left_forward: 1,
-                right_backward: 0,
-                right_forward: 0.9
-            }
+            const actuatorResponse = await this.callEywa(input);
+            // const actuatorResponse: ActuatorHttpResponse = {
+            //     left_backward: 0,
+            //     left_forward: 1,
+            //     right_backward: 0,
+            //     right_forward: 0.9
+            // }
             this.updateSimu(actuatorResponse);
         } catch (e) {
             console.log(e);
@@ -100,20 +100,24 @@ export class HellMazerSimu {
         const left_pain = left_distance < this.painThreshold ? 1.0 : 0.0;
 
         return {
-            forward: front_distance,
+            forward: front_distance > 1 ? 1 : front_distance,
             forward_pain: front_pain,
-            right: right_distance,
-            right_pain,
-            back: back_distance,
-            back_pain,
-            left: left_distance,
+            right: right_distance > 1 ? 1 : right_distance,
+            // right_pain,
+            right_pain: 0.1,
+            back: back_distance > 1 ? 1 : back_distance,
+            // back_pain,
+            back_pain: 0.9,
+            left: left_distance > 1 ? 1 : left_distance,
             left_pain
         }
     }
 
     async callEywa(sensory_input: SensorHttpBody): Promise<ActuatorHttpResponse> {
         const response: ActuatorHttpResponse = (await axios.put('http://localhost:4200/sensactio', sensory_input)).data;
+        console.log(sensory_input);
         console.log(response);
+        console.log('------------------------\n\n');
         return response;
     }
 
